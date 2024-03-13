@@ -1,0 +1,169 @@
+{
+  "temposvc": {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "meta.helm.sh/release-name": "tempo-tempo",
+        "meta.helm.sh/release-namespace": "tempo"
+      },
+      "creationTimestamp": "2024-03-06T12:45:33Z",
+      "labels": {
+        "app.kubernetes.io/instance": "tempo-tempo",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "tempo",
+        "app.kubernetes.io/version": "2.3.0-ubi9",
+        "helm.sh/chart": "tempo-1.7.1-bb.3",
+        "helm.toolkit.fluxcd.io/name": "tempo",
+        "helm.toolkit.fluxcd.io/namespace": "bigbang"
+      },
+      "name": "tempo-tempo",
+      "namespace": "tempo",
+      "resourceVersion": "7414",
+      "uid": "ec0501ba-6c4e-4a06-98aa-469dfa097619"
+    },
+    "spec": {
+      "clusterIP": "10.43.134.23",
+      "clusterIPs": [
+        "10.43.134.23"
+      ],
+      "internalTrafficPolicy": "Cluster",
+      "ipFamilies": [
+        "IPv4"
+      ],
+      "ipFamilyPolicy": "SingleStack",
+      "ports": [
+        {
+          "name": "http-tempo-prom-metrics",
+          "port": 3100,
+          "protocol": "TCP",
+          "targetPort": 3100
+        },
+        {
+          "name": "http-jaeger-metrics",
+          "port": 16687,
+          "protocol": "TCP",
+          "targetPort": 16687
+        },
+        {
+          "name": "http-tempo-query-jaeger-ui",
+          "port": 16686,
+          "protocol": "TCP",
+          "targetPort": 16686
+        },
+        {
+          "name": "udp-tempo-jaeger-thrift-compact",
+          "port": 6831,
+          "protocol": "UDP",
+          "targetPort": 6831
+        },
+        {
+          "name": "udp-tempo-jaeger-thrift-binary",
+          "port": 6832,
+          "protocol": "UDP",
+          "targetPort": 6832
+        },
+        {
+          "name": "http-tempo-jaeger-thrift-http",
+          "port": 14268,
+          "protocol": "TCP",
+          "targetPort": 14268
+        },
+        {
+          "name": "grpc-tempo-jaeger",
+          "port": 14250,
+          "protocol": "TCP",
+          "targetPort": 14250
+        },
+        {
+          "name": "tcp-tempo-zipkin",
+          "port": 9411,
+          "protocol": "TCP",
+          "targetPort": 9411
+        },
+        {
+          "name": "tcp-tempo-otlp-legacy",
+          "port": 55680,
+          "protocol": "TCP",
+          "targetPort": 55680
+        },
+        {
+          "name": "http-tempo-otlp-http-legacy",
+          "port": 55681,
+          "protocol": "TCP",
+          "targetPort": 4318
+        },
+        {
+          "name": "grpc-tempo-otlp",
+          "port": 4317,
+          "protocol": "TCP",
+          "targetPort": 4317
+        },
+        {
+          "name": "http-tempo-otlp-http",
+          "port": 4318,
+          "protocol": "TCP",
+          "targetPort": 4318
+        },
+        {
+          "name": "tcp-tempo-opencensus",
+          "port": 55678,
+          "protocol": "TCP",
+          "targetPort": 55678
+        }
+      ],
+      "selector": {
+        "app.kubernetes.io/instance": "tempo-tempo",
+        "app.kubernetes.io/name": "tempo"
+      },
+      "sessionAffinity": "None",
+      "type": "ClusterIP"
+    },
+    "status": {
+      "loadBalancer": {}
+    }
+  },
+  "tempovs": {
+    "apiVersion": "networking.istio.io/v1beta1",
+    "kind": "VirtualService",
+    "metadata": {
+      "annotations": {
+        "meta.helm.sh/release-name": "tempo-tempo",
+        "meta.helm.sh/release-namespace": "tempo"
+      },
+      "creationTimestamp": "2024-03-06T12:45:33Z",
+      "generation": 1,
+      "labels": {
+        "app.kubernetes.io/managed-by": "Helm",
+        "helm.toolkit.fluxcd.io/name": "tempo",
+        "helm.toolkit.fluxcd.io/namespace": "bigbang"
+      },
+      "name": "tempo-query",
+      "namespace": "tempo",
+      "resourceVersion": "7441",
+      "uid": "acae032a-eb62-418f-a869-47694f8c9021"
+    },
+    "spec": {
+      "gateways": [
+        "istio-system/public"
+      ],
+      "hosts": [
+        "tempo.bigbang.dev"
+      ],
+      "http": [
+        {
+          "route": [
+            {
+              "destination": {
+                "host": "tempo-tempo",
+                "port": {
+                  "number": 16686
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

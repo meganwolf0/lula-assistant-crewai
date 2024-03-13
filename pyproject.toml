@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lula-assistant"
+version = "0.1.0"
+description = ""
+authors = ["Megan Wolf <megan@defenseunicorns.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<=3.13"
+crewai = {extras = ["tools"], version = "^0.19.0"}
+kubernetes = "^29.0.0"
+langchain = "^0.1.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

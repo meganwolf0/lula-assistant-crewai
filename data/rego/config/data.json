@@ -1,0 +1,114 @@
+{
+  "istioconfig": {
+      "accessLogFile": "/dev/stdout",
+      "accessLogFormat": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% %RESPONSE_CODE_DETAILS% %CONNECTION_TERMINATION_DETAILS% \"%UPSTREAM_TRANSPORT_FAILURE_REASON%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME% %ROUTE_NAME% traceID=%REQ(x-b3-traceid)%\n",
+      "defaultConfig": {
+          "discoveryAddress": "istiod.istio-system.svc:15012",
+          "holdApplicationUntilProxyStarts": true,
+          "proxyMetadata": {},
+          "tracing": {
+              "sampling": 100,
+              "zipkin": {
+                  "address": "tempo-tempo.tempo.svc:9411"
+              }
+          },
+          "zipkinAddress": "tempo-tempo.tempo.svc:9411"
+      },
+      "defaultProviders": {
+          "metrics": [
+              "prometheus"
+          ]
+      },
+      "enablePrometheusMerge": true,
+      "enableTracing": true,
+      "meshMTLS": {
+          "minProtocolVersion": "TLSV1_2"
+      },
+      "rootNamespace": "istio-system",
+      "trustDomain": "cluster.local"
+  },
+  "tempoconfig": {
+      "compactor": {
+          "compaction": {
+              "block_retention": "336h"
+          }
+      },
+      "distributor": {
+          "receivers": {
+              "jaeger": {
+                  "protocols": {
+                      "grpc": {
+                          "endpoint": "0.0.0.0:14250"
+                      },
+                      "thrift_binary": {
+                          "endpoint": "0.0.0.0:6832"
+                      },
+                      "thrift_compact": {
+                          "endpoint": "0.0.0.0:6831"
+                      },
+                      "thrift_http": {
+                          "endpoint": "0.0.0.0:14268"
+                      }
+                  }
+              },
+              "opencensus": null,
+              "otlp": {
+                  "protocols": {
+                      "grpc": {
+                          "endpoint": "0.0.0.0:4317"
+                      },
+                      "http": {
+                          "endpoint": "0.0.0.0:4318"
+                      }
+                  }
+              },
+              "zipkin": {
+                  "endpoint": "0.0.0.0:9411"
+              }
+          }
+      },
+      "ingester": {
+          "max_block_bytes": 1000000,
+          "max_block_duration": "5m",
+          "trace_idle_period": "10s"
+      },
+      "metrics_generator": {
+          "storage": {
+              "path": "/tmp/tempo",
+              "remote_write": [
+                  {
+                      "url": "http://monitoring-monitoring-kube-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
+                  }
+              ]
+          }
+      },
+      "multitenancy_enabled": false,
+      "overrides": {
+          "ingestion_rate_limit_bytes": 30000000,
+          "metrics_generator_processors": [
+              "service-graphs",
+              "span-metrics"
+          ],
+          "per_tenant_override_config": "/conf/overrides.yaml"
+      },
+      "querier": {},
+      "query_frontend": {},
+      "server": {
+          "http_listen_port": 3100
+      },
+      "storage": {
+          "trace": {
+              "backend": "local",
+              "local": {
+                  "path": "/var/tempo/traces"
+              },
+              "wal": {
+                  "path": "/var/tempo/wal"
+              }
+          }
+      },
+      "usage_report": {
+          "reporting_enabled": true
+      }
+  }
+}

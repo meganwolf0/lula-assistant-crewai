@@ -1,0 +1,6 @@
+# Ignore .env
+.env
+runs
+*.pyc
+.DS_Store
+db
