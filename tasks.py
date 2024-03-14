@@ -29,7 +29,7 @@ class Tasks():
                 of {self.tool} operating in the system can be used to partially or fully satisfy the control.
                 Consult other agents as needed to understand the control and the {self.tool}.
                 Break out the control into specific functional requirements that can be evaluated
-                by artifacts of the Kubernetes system specific to the {self.tool} implementation there.
+                using artifacts of the Kubernetes system specific to the {self.tool} implementation there.
                 """),
             expected_output=dedent(f"""
                 Concise functional requirements that can be evaluated by examining Kubernetes resources.
@@ -45,6 +45,8 @@ class Tasks():
                 resources that implement {self.tool} and specifically with respect to the {check_type} of {self.tool} in the cluster.
 
                 You should prove {self._evidence_text(check_type)}
+
+                Check with human on completeness of resources extracted.
 
                 For the Kubernetes resources extracted, write one or many rego validation policies, to be evaluated in an Open Policy 
                 Agent (OPA) server that inputs one or many of these resources and outputs a boolean value indicating whether the 

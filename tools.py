@@ -1,7 +1,6 @@
 from kubernetes import client, config
 from langchain.tools import tool
 import json
-from datetime import datetime
 import subprocess
 import sys
 import base64

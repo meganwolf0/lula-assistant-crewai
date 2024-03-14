@@ -90,7 +90,7 @@ class Agents():
             llm=self.llm
         )
 
-    def kubernetes_expert(self, tool):
+    def kubernetes_expert(self, tool, human_tools):
         return Agent(
             role='Kubernetes Expert',
             goal='Provide evidentiary support of control satisfaction by {tool} in Kubernetes with respect to Kubernetes configurations',
@@ -107,7 +107,7 @@ class Agents():
 
                 {self._custom_tools_text()}
             """),
-            tools=[get_cluster_resources, get_named_resources, get_resource, base64_decode, self.search_tool],
+            tools=[get_cluster_resources, get_named_resources, get_resource, base64_decode, self.search_tool]+human_tools,
             # allow_delegation=True,
             llm=self.llm
         )
