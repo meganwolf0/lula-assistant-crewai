@@ -10,6 +10,7 @@ An Assistant to aid in the creation of Lula Validation Artifacts using CrewAI
         - Note: You will need to have a billing account set-up
 
 **Run**
+
 To run the script
 ```bash
 poetry run python main.py
